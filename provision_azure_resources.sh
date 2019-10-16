@@ -32,6 +32,8 @@ declare registryName="${teamName}${teamNumber}acr";
 declare webAppName="${teamName}${teamNumber}web";
 declare storageAccountName="${teamName}${teamNumber}sa"
 declare devopsProjectName="${teamName}${teamNumber}";
+declare acrFileName="${teamName}${teamNumber}_acr.json"
+declare subscriptionFileName="${teamName}${teamNumber}_subscription.json"
 declare imageName="eshoponweb"
 declare tenantId=$(az account show --query tenantId -o tsv)
 declare subscriptionId=$(az account show --query id -o tsv)
@@ -128,19 +130,19 @@ az acr webhook create -n WebAppDeployment -r ${registryName} --uri ${WEB_HOOK_UR
 
 # output ACR info
 jq -n --arg acrU $acrUsername --arg acrP $acrPassword --arg acrLs $acrLoginServer --arg acrIn $acrImageName '{
-    acrUserName: $acrU, acrPassword: $acrP, acrLoginServer: $acrLs, acrImageName: $acrIn}' > acr.json
+    acrUserName: $acrU, acrPassword: $acrP, acrLoginServer: $acrLs, acrImageName: $acrIn}' > $acrFileName
 
-# Create Service Principal and output to sp_config.json
+# Create Service Principal and output to .json
 export SP_JSON=`az ad sp create-for-rbac --role="Contributor" -o json`
-echo $SP_JSON | jq --arg subId ${subscriptionId} --arg subName ${subscriptionName} --arg stConnectionString ${ST_CONNECTION_STRING} '. + {subscriptionId: $subId, subscriptionName: $subName, storageConnectionString: $stConnectionString}' | jq . > subscription.json
+echo $SP_JSON | jq --arg subId ${subscriptionId} --arg subName ${subscriptionName} --arg stConnectionString ${ST_CONNECTION_STRING} '. + {subscriptionId: $subId, subscriptionName: $subName, storageConnectionString: $stConnectionString}' | jq . > $subscriptionFileName
 # Add the required kv access-policy for the service principal
-declare sp=$(cat subscription.json | jq .appId | xargs)
+declare sp=$(cat $subscriptionFileName | jq .appId | xargs)
 
 sleep 30
 az keyvault set-policy -n $keyVaultName --object-id $(az ad sp show --id ${sp} | jq .objectId | xargs ) --secret-permissions get list --key-permissions get list
 
 # Add the required kv access-policy for the web app
-declare WEB_APP_SP=$(az webapp identity assign -g $resourceGroupName -n $webAppName | jq .principalId | xargs ) 
+declare WEB_APP_SP=$(az webapp identity assign -g $resourceGroupName -n $webAppName | jq .principalId | xargs )
 
 sleep 30
 az keyvault set-policy -n $keyVaultName --object-id $WEB_APP_SP --secret-permissions get list --key-permissions get list
@@ -150,10 +152,9 @@ az keyvault set-policy -n $keyVaultName --object-id $WEB_APP_SP --secret-permiss
 declare diagStorageAccountName="${teamName}${teamNumber}dsa";
 
 echo "Creating Aqua Server"
-if [ `az group exists --name aqua_rg` ]; then 
+if [ `az group exists --name aqua_rg` ]; then
   az group delete --name aqua_rg -y
 fi
 
-az group create --name aqua_rg --location ${resourceGroupLocation} 
+az group create --name aqua_rg --location ${resourceGroupLocation}
 az group deployment create --name DeployAqua --resource-group aqua_rg --template-file ./template.json --parameters ./parameters.json  --parameters diagStorageAccountName=${diagStorageAccountName}
- 

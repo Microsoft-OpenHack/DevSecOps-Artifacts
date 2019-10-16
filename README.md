@@ -72,7 +72,7 @@ Personal Access Token is required to configure Git repo for OpenHack challenges.
 1. Fill out Name for your token (e.g. DevSecOps - code full), and select **Full** under **Code** section.
 
     ![PAT create](images/PatCreate.png)
-    
+
 1. Save your Token for later use in the next section (5. Deploy Azure DevOps project).
 
     ![PAT OK](images/PatCreateOk.png)
@@ -93,4 +93,4 @@ bash provision_devops.sh -u teamMember1@microsoft.com,teamMember2@microsoft.com 
 
 ### 6. Save your work
 
-Keep the `subscription.json` and `acr.json` files you will need them in Challenge 1.
+Keep the `<teamName>_subscription.json` and `<teamName>_acr.json` files you will need them in Challenge 1.
