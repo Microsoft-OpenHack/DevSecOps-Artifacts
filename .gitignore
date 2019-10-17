@@ -263,5 +263,5 @@ pub/
 # Service Principal File for AzureDevOps
 devops_config.json
 
-**/acr.json
-**/subscription.json
+**/*acr.json
+**/*subscription.json
