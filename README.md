@@ -20,11 +20,15 @@ This script deploys and configures all the resources your team will need in orde
 
 2. Provision Azure Resources in Opsgility subscription
 
-3. Az Login using your Microsoft Account
+3. Az Login using your MSFT Account
 
-4. Provision Azure DevOps resources
+4. Prepare Personal Access Token (PAT) for Azure DevOps
 
-5. Save your work
+5. Deploy Azure DevOps project
+
+6. Assign Attendees to Projects
+
+7. Save your work
 
 ### 1. Az Login to Opsgility Subscription
 
@@ -79,18 +83,32 @@ Personal Access Token is required to configure Git repo for OpenHack challenges.
 
 ### 5. Deploy Azure DevOps project
 
-Finally, provision the DevOps project by running the script below. You will pass the same team number, a **comma-separated list** of emails for users that should be provisioned into the project, and PAT created in previous section.
+Provision the DevOps project by running the script below. You will pass the same team number, and PAT created in previous section.
 
 ```bash
-bash provision_devops.sh -u <Comma separated usernames> -t <teamNumber> -s '<personalAccessToken>'
+bash provision_devops.sh -t <teamNumber> -s '<personalAccessToken>'
 ```
 
-Example: Provision the project for Volker Will and Richard Guthrie who are in team 1
+Example: Provision the project for team 1.
 
 ```bash
-bash provision_devops.sh -u teamMember1@microsoft.com,teamMember2@microsoft.com -t 1 -s 'lqqmlixfx5sgfsfguu7bhsv5uggsdhjfkuhkhlljlkh2yyfgklsa'
+bash provision_devops.sh -t 1 -s 'lqqmlixfx5sgfsfguu7bhsv5uggsdhjfkuhkhlljlkh2yyfgklsa'
 ```
 
-### 6. Save your work
+### 6. Assign Attendees to Projects
+
+Finally, collect aliases of all Attendees. You will pass the same team number, and a **comma-separated list** of emails for users that should be assigned into the project.
+
+```bash
+./assign_attendees.sh -u <Comma separated usernames> -t <teamNumber>
+```
+
+Example: Assign access to ADO project for Volker Will and Richard Guthrie who are in team 1.
+
+```bash
+./assign_attendees.sh -u -u teamMember1@microsoft.com,teamMember2@microsoft.com -t 1
+```
+
+### 7. Save your work
 
 Keep the `<teamName>_subscription.json` and `<teamName>_acr.json` files you will need them in Challenge 1.
