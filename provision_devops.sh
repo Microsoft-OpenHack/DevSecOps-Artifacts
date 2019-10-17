@@ -1,22 +1,16 @@
-
 #!/bin/bash
 
-usage() { echo "Usage: provision_devops.sh -u <userEmails> -t <teamNumber> -s '<personalAccessToken>'" 1>&2; exit 1; }
+usage() { echo "Usage: provision_devops.sh -t <teamNumber> -s '<personalAccessToken>'" 1>&2; exit 1; }
 
 declare organization="https://dev.azure.com/DevSecOpsOH"
 declare repositoryName="eShopOnWeb"
 declare templateGitHubProject="https://github.com/rguthriemsft/eShopOnWeb"
-declare userEmails=""
-declare acrConfigFile="acr.json"
-declare subscriptionConfigFile="subscription.json"
+declare teamName="devsecopsohlite"
 
 # Initialize parameters specified from command line
-while getopts ":u:t:s:" arg; do
+while getopts ":t:s:" arg; do
     case "${arg}" in
 
-        u)
-            userEmails=${OPTARG}
-        ;;
         t)
             teamNumber=${OPTARG}
         ;;
@@ -29,6 +23,8 @@ done
 shift $((OPTIND-1))
 
 declare projectName="devsecopsohlite"${teamNumber}
+declare acrConfigFile="${teamName}${teamNumber}_acr.json"
+declare subscriptionConfigFile="${teamName}${teamNumber}_subscription.json"
 
 echo "=========================================="
 echo " VARIABLES"
@@ -37,7 +33,6 @@ echo "organization              = "${organization}
 echo "projectName               = "${projectName}
 echo "repositoryName            = "${repositoryName}
 echo "templateGitHubProject     = "${templateGitHubProject}
-echo "userEmails                = "${userEmails}
 echo "teamNumber                = "${teamNumber}
 echo "=========================================="
 
@@ -62,27 +57,6 @@ az devops configure --defaults organization=$organization
 
 # Create Project
 az devops project create --name $projectName --organization $organization -p Agile
-
-# Add users to Administrator groups
-CurrentIFS=$IFS
-IFS=','
-read -r -a emails <<< "$userEmails"
-echo "userEmails: ${userEmails}"
-
-for email in "${emails[@]}"
-do
-  echo "email: ${email}"
-  az devops user add --email-id $email --license-type stakeholder --organization $organization --send-email-invite false
-  projectAdministratorDescriptor=`az devops security group list --organization $organization -p $projectName --scope=project --query "graphGroups[?displayName=='Project Administrators'].descriptor" --output tsv`
-  buildAdministratorDescriptor=`az devops security group list --organization $organization -p $projectName --scope=project --query "graphGroups[?displayName=='Build Administrators'].descriptor" --output tsv`
-  teamDescriptor=`az devops security group list --organization $organization -p $projectName --scope=project --query "graphGroups[?displayName=='$projectName Team'].descriptor" --output tsv`
-  memberDescriptor=`az devops user show --user $email --query 'user.descriptor' --output tsv`
-  az devops security group membership add --group-id $projectAdministratorDescriptor --member-id $memberDescriptor --organization $organization
-  az devops security group membership add --group-id $buildAdministratorDescriptor --member-id $memberDescriptor --organization $organization
-  az devops security group membership add --group-id $teamDescriptor --member-id $memberDescriptor --organization $organization
-done
-
-IFS=$CurrentIFS
 
 # Prepare Git repo
 git config --global core.autocrlf false
@@ -130,4 +104,6 @@ projectId=$(az devops project show -p $projectName --org $organization | jq .id)
 projectIdTrimmed=$(echo "${projectId//\"}")
 
 configeFileData=$(cat ${subscriptionConfigFile})
-echo  $configeFileData |jq --arg ProjName ${projectName} --arg projId ${projectIdTrimmed} '. + {projectName: $ProjName, projectIdTrimmed: $projId}' | jq . > subscription.json
+echo $configeFileData |jq --arg ProjName ${projectName} --arg projId ${projectIdTrimmed} '. + {projectName: $ProjName, projectIdTrimmed: $projId}' | jq . > subscription.json
+
+echo 'Done!'

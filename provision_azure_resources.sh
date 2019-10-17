@@ -99,7 +99,7 @@ az storage file upload --share-name $modifiedStorageAccountFileShareName --sourc
 
 echo "StorageConnectionString: ${ST_CONNECTION_STRING}"
 ESCAPED_ST_CONNECTION_STRING=$(echo "$ST_CONNECTION_STRING" | sed -r 's/\//\\\//g')
-sed -i "s/REPLACEWITHCS/${ESCAPED_ST_CONNECTION_STRING}/g"  ../src/Infrastructure/Data/StorageAcctDbSeed.cs
+sed -i "s/REPLACEWITHCS/${ESCAPED_ST_CONNECTION_STRING}/g" ../src/Infrastructure/Data/StorageAcctDbSeed.cs
 
 
 # Build and Publish images
@@ -129,8 +129,7 @@ WEB_HOOK_URL=$(az webapp deployment container config -n ${webAppName} -g ${resou
 az acr webhook create -n WebAppDeployment -r ${registryName} --uri ${WEB_HOOK_URL} --actions push
 
 # output ACR info
-jq -n --arg acrU $acrUsername --arg acrP $acrPassword --arg acrLs $acrLoginServer --arg acrIn $acrImageName '{
-    acrUserName: $acrU, acrPassword: $acrP, acrLoginServer: $acrLs, acrImageName: $acrIn}' > $acrFileName
+jq -n --arg acrU $acrUsername --arg acrP $acrPassword --arg acrLs $acrLoginServer --arg acrIn $acrImageName '{acrUserName: $acrU, acrPassword: $acrP, acrLoginServer: $acrLs, acrImageName: $acrIn}' > $acrFileName
 
 # Create Service Principal and output to .json
 export SP_JSON=`az ad sp create-for-rbac --role="Contributor" -o json`
@@ -153,8 +152,10 @@ declare diagStorageAccountName="${teamName}${teamNumber}dsa";
 
 echo "Creating Aqua Server"
 if [ `az group exists --name aqua_rg` ]; then
-  az group delete --name aqua_rg -y
+    az group delete --name aqua_rg -y
 fi
 
 az group create --name aqua_rg --location ${resourceGroupLocation}
 az group deployment create --name DeployAqua --resource-group aqua_rg --template-file ./template.json --parameters ./parameters.json  --parameters diagStorageAccountName=${diagStorageAccountName}
+
+echo 'Done!'
