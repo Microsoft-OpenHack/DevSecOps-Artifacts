@@ -38,6 +38,8 @@ declare imageName="eshoponweb"
 declare tenantId=$(az account show --query tenantId -o tsv)
 declare subscriptionId=$(az account show --query id -o tsv)
 declare subscriptionName=$(az account show --query name -o tsv)
+declare diagStorageAccountName="${teamName}${teamNumber}dsa";
+declare aquaRgName="aqua_${teamName}${TeamNumber}_rg"
 
 echo "=========================================="
 echo " VARIABLES"
@@ -148,14 +150,12 @@ az keyvault set-policy -n $keyVaultName --object-id $WEB_APP_SP --secret-permiss
 
 # Create an Aqua Server for Container Scanning Scenario
 
-declare diagStorageAccountName="${teamName}${teamNumber}dsa";
-
 echo "Creating Aqua Server"
-if [ `az group exists --name aqua_rg` ]; then
-    az group delete --name aqua_rg -y
+if [ `az group exists --name ${aquaRgName}` ]; then
+    az group delete --name ${aquaRgName} -y
 fi
 
-az group create --name aqua_rg --location ${resourceGroupLocation}
-az group deployment create --name DeployAqua --resource-group aqua_rg --template-file ./template.json --parameters ./parameters.json  --parameters diagStorageAccountName=${diagStorageAccountName}
+az group create --name ${aquaRgName} --location ${resourceGroupLocation}
+az group deployment create --name DeployAqua --resource-group ${aquaRgName} --template-file ./template.json --parameters ./parameters.json  --parameters diagStorageAccountName=${diagStorageAccountName}
 
 echo 'Done!'
