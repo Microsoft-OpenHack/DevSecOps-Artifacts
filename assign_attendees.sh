@@ -14,7 +14,7 @@ while getopts ":u:t:" arg; do
             userEmails=${OPTARG}
         ;;
         t)
-            teamNumber=${OPTARG}
+            teamNumber=$(echo "${OPTARG}" | tr '[:upper:]' '[:lower:]' | tr -d '[:space:]')
         ;;
 
     esac

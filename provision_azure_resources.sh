@@ -11,13 +11,13 @@ declare resourceGroupLocation=""
 declare teamName="devsecopsohlite"
 declare teamNumber=""
 
-while getopts ":l:t:o:d:" arg; do
+while getopts ":l:t:" arg; do
     case "${arg}" in
         l)
             resourceGroupLocation=${OPTARG}
         ;;
         t)
-            teamNumber=${OPTARG}
+            teamNumber=$(echo "${OPTARG}" | tr '[:upper:]' '[:lower:]' | tr -d '[:space:]')
         ;;
     esac
 done
