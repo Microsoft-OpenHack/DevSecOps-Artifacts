@@ -39,7 +39,7 @@ declare tenantId=$(az account show --query tenantId -o tsv)
 declare subscriptionId=$(az account show --query id -o tsv)
 declare subscriptionName=$(az account show --query name -o tsv)
 declare diagStorageAccountName="${teamName}${teamNumber}dsa";
-declare aquaRgName="aqua_${teamName}${TeamNumber}_rg"
+declare aquaRgName="${teamName}${teamNumber}aquarg"
 
 echo "=========================================="
 echo " VARIABLES"
@@ -49,6 +49,7 @@ echo "subscriptionName          = "${subscriptionName}
 echo "tenantId                  = "${tenantId}
 echo "resourceGroupLocation     = "${resourceGroupLocation}
 echo "resourceGroupName         = "${resourceGroupName}
+echo "aquaRgName                = "${aquaRgName}
 echo "teamName                  = "${teamName}
 echo "teamNumber                = "${teamNumber}
 echo "keyVaultName              = "${keyVaultName}
@@ -100,9 +101,6 @@ az storage file upload --share-name $modifiedStorageAccountFileShareName --sourc
 az storage file upload --share-name $modifiedStorageAccountFileShareName --source ./originalData/CatalogTypes.json --account-name $storageAccountName
 
 echo "StorageConnectionString: ${ST_CONNECTION_STRING}"
-ESCAPED_ST_CONNECTION_STRING=$(echo "$ST_CONNECTION_STRING" | sed -r 's/\//\\\//g')
-sed -i "s/REPLACEWITHCS/${ESCAPED_ST_CONNECTION_STRING}/g" ../src/Infrastructure/Data/StorageAcctDbSeed.cs
-
 
 # Build and Publish images
 pushd .
@@ -156,6 +154,6 @@ if [ `az group exists --name ${aquaRgName}` ]; then
 fi
 
 az group create --name ${aquaRgName} --location ${resourceGroupLocation}
-az group deployment create --name DeployAqua --resource-group ${aquaRgName} --template-file ./template.json --parameters ./parameters.json  --parameters diagStorageAccountName=${diagStorageAccountName}
+az group deployment create --name DeployAqua --resource-group ${aquaRgName} --template-file ./template.json --parameters ./parameters.json  --parameters virtualNetworkExistingRGName=${aquaRgName} diagStorageResourceGroupName=${aquaRgName} diagStorageAccountName=${diagStorageAccountName}
 
 echo 'Done!'

@@ -12,7 +12,7 @@ while getopts ":t:s:" arg; do
     case "${arg}" in
 
         t)
-            teamNumber=${OPTARG}
+            teamNumber=$(echo "${OPTARG}" | tr '[:upper:]' '[:lower:]' | tr -d '[:space:]')
         ;;
         s)
             personalAccessToken=${OPTARG}
@@ -65,7 +65,8 @@ git clone --mirror $templateGitHubProject $repositoryName/.git
 cd $repositoryName
 git config --bool core.bare false
 git checkout master
-sed -i "s/REPLACEWITHCS/${storageConnectionString}/g" src/Infrastructure/Data/StorageAcctDbSeed.cs
+escapedStorageConnectionString=$(echo "$storageConnectionString" | sed -r 's/\//\\\//g')
+sed -i "s/REPLACEWITHCS/${escapedStorageConnectionString}/g" src/Infrastructure/Data/StorageAcctDbSeed.cs
 git commit -a -m "Updated connection string."
 git checkout ch1_Fix
 git merge master
@@ -93,17 +94,17 @@ export AZURE_DEVOPS_EXT_AZURE_RM_SERVICE_PRINCIPAL_KEY=$serviceEndpointSpPasswor
 az devops service-endpoint azurerm create --azure-rm-service-principal-id $serviceEndpointSpAppId --azure-rm-subscription-id $serviceEndpointSubscriptionId --azure-rm-subscription-name "${serviceEndpointSubscriptionName}" --azure-rm-tenant-id $serviceEndpointSpTenant --name ${projectName}Se --project ${projectName} --organization $organization
 
 # Delete the default repo
-REPO_ID=`az repos list --organization $organization -p $projectName --query "[?name=='$projectName']" | jq '.[0].id' | tr -d '"'`
+REPO_ID=`az repos list --organization $organization --project $projectName --query "[?name=='$projectName']" | jq '.[0].id' | tr -d '"'`
 
 echo "Deleting repo $projectName with ID: $REPO_ID"
 
-az repos delete --id $REPO_ID --organization $organization -p $projectName --yes
+az repos delete --id $REPO_ID --organization $organization --project $projectName --yes
 
 # Append to subscription.json
 projectId=$(az devops project show -p $projectName --org $organization | jq .id)
 projectIdTrimmed=$(echo "${projectId//\"}")
 
 configeFileData=$(cat ${subscriptionConfigFile})
-echo $configeFileData |jq --arg ProjName ${projectName} --arg projId ${projectIdTrimmed} '. + {projectName: $ProjName, projectIdTrimmed: $projId}' | jq . > subscription.json
+echo $configeFileData | jq --arg ProjName ${projectName} --arg projId ${projectIdTrimmed} '. + {projectName: $ProjName, projectIdTrimmed: $projId}' | jq . > $subscriptionConfigFile
 
 echo 'Done!'
