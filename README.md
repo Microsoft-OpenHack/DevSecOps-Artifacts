@@ -47,7 +47,6 @@ az login
 This assumes you are in the root of repo.
 
 ```bash
-cd script
 ./provision_azure_resources.sh -l westus -t <teamNumber>
 ```
 
