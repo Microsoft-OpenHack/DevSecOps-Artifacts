@@ -59,14 +59,22 @@ az devops configure --defaults organization=$organization
 az devops project create --name $projectName --organization $organization -p Agile
 
 # Prepare Git repo
-git config --global core.autocrlf false
-git config --global core.eol lf
-git clone --mirror $templateGitHubProject $repositoryName/.git
+git clone $templateGitHubProject
 cd $repositoryName
+git config core.autocrlf false
+git config core.eol lf
 git config --bool core.bare false
 git checkout master
-escapedStorageConnectionString=$(echo "$storageConnectionString" | sed -r 's/\//\\\//g')
-sed -i "s/REPLACEWITHCS/${escapedStorageConnectionString}/g" src/Infrastructure/Data/StorageAcctDbSeed.cs
+escapedStorageConnectionString=$(echo "$storageConnectionString" | sed 's/\//\\\//g')
+
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    echo "Provisioning from MAC OSX"
+    sed -i '' "s/REPLACEWITHCS/${escapedStorageConnectionString}/g" src/Infrastructure/Data/StorageAcctDbSeed.cs
+else
+    echo "provisioning on Windows/Linux"
+    sed -i "s/REPLACEWITHCS/${escapedStorageConnectionString}/g" src/Infrastructure/Data/StorageAcctDbSeed.cs
+fi
+
 git commit -a -m "Updated connection string."
 git checkout ch1_Fix
 git merge master
