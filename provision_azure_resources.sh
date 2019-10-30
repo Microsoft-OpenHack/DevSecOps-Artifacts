@@ -102,14 +102,6 @@ az storage file upload --share-name $modifiedStorageAccountFileShareName --sourc
 
 echo "StorageConnectionString: ${ST_CONNECTION_STRING}"
 
-# Build and Publish images
-pushd .
-cd ..
-docker build . -t ${acrImageName}:latest
-docker login -u ${acrUsername} -p ${acrPassword} ${acrLoginServer}
-docker push ${acrImageName}:latest
-popd
-
 # Provision WebApp
 
 # App Service Plan

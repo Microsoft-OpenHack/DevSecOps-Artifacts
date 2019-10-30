@@ -115,4 +115,7 @@ projectIdTrimmed=$(echo "${projectId//\"}")
 configeFileData=$(cat ${subscriptionConfigFile})
 echo $configeFileData | jq --arg ProjName ${projectName} --arg projId ${projectIdTrimmed} '. + {projectName: $ProjName, projectIdTrimmed: $projId}' | jq . > $subscriptionConfigFile
 
+# Run Docker CI
+az pipelines run --name 'eShopOnWeb-Docker.CI' --branch master --project $projectName --organization $organization
+
 echo 'Done!'
