@@ -12,16 +12,16 @@
             "value": "ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAg+3Cpm4g5ZJk65a9kVcUpaP6atdYEBtpsGtXj/OpvTEXCLm1ufQXd3OIJtB19hom6xoOxV8URTIBg8gtWmrYC+J7vBBUxxZ43bU0AhQ6lFjOkT78JlTe6+8UK66aoqIbju/i83AfkiRx0rMJTfXlYwkYE4a4YKSVISBY4MH/KIEEpNXFLlx96n5qmO9fDUwMDVp+LLIHvfvYCSkMS4Twl1MWa9tqP7Ght2Lj5nDJeZnR/qjA6VtKqexhe0yiwqkjLdu5iWjOBsFWzWMI18bhiC25Ao5w3SFa4NHAh97a+gtt3xOGYyIMY5aAv7CK6iN7D0U7fUbuMH6tMUbJ668M6Q== rsa-key-20190521"
         },
         "registryId": {
-            "value": "tsushi@microsoft.com"
+            "value": "openhackuser@microsoft.com"
         },
         "registryPassword": {
-            "value": "43TiYNT4L836ZR"
+            "value": "gbau76uC"
         },
         "aquaVersion": {
-            "value": "4.2"
+            "value": "4.5"
         },
         "aquaLicenseToken": {
-            "value": "9pvG6IzhmeoFYEyJ_PaB33FBjeseQFo-VZ1woUAeEp3BCB5L-oLf_NSqI3oPXhXZ9DENcT0HcqNb0zeb2rCSe3Tk1ln1G7LtKEd5hcyjpGhmqXfJctwMPsMkl1qCJkkB13gGXkvCiGJxNiYytyJHX0ysdp32kO9gUEFwqB7foU1ScPcNtsZlpaiFSLc-sDXqBpR7KxpPFH16IzjwqqXS5A2FVoC8vhwcw7MofD2yKKFkB8ZnPLC1G65_MWxn_JA_K8ua5gQ-aRtxISmlmH66_GcmpQKbULCIlH9_2BYBUnacdTJkBs-dXhhZT2pBQO4gTf5zBWaC5zsJjkviuaVBMj-RRjo5O10XqNSf1EDV1na2RKtni18T7UGT9tkYcLTV3NqeXQVa9vkHDYteyHDOZVDtH0oqKxkjZvhrer8OeaMqB7uSASYvjYXR85Ewa3x8vg5FKuQcEutZNY5HSqqTmNUHUDxoAhV0HwrWz0zoRB-0ef6bxpEv3J69CTDuVP9NB9y7FO2z86763miIzhjyxZVwbJhxD_Gui7ESj5P7vLy0Db2ID0VC5eJUyUXJxPUQTtylW6hKOJU8hpCZNW6YtbHizlR31McdzkU3GBjwirzmys98IdVRO0FXaNng9Hjk2TaFH4ovfooZujcEJ38_UUCHLK236ziAm-EAQEw="
+            "value": "anMkNPH8VWpCoyfbJ8wFfZ7Ift5mqoITyR2kRvZ6iM9_umD6_LFGCsRxpdsjQYt4gjLg6k5QJfwXKSQqAGDVw-us35UzfYWzXLzdk4vxcMlrRyqDesJZGZkf1yHJ_iW9RwMt6LONd7YITl-0Ijj-QakaPcq4AkrxunTAuoRn_ZOvHeL4y8HVPZ1kJdOLnogO4ByweRunQyqlYct1vg3ANXvH1_8Gsj2mTkZKTk-l5rn91Ww-sAegi5RZBJ73llJrG6o9AMvfaYAHJYijrl2zFUJPIr3RJd7o5yv7ZZtAyoQyCzSMttHN8LyOKuJQ0E4xc_9PSw8ONWkApz4rbSGpIXj7rmclu1cCuciJMUUsoRuB_hxE1xNuBzJoF22WBlSgSVZo4CN0zN3lDoQ5AdLfiyKuD0AOsxorgPHqwaOeWQTE7Zs7aMDor6Yi-N92ApXEA32IiIeQmUS6VQUTu9jM-huz5_yI9-M6OvWyPSYy0oQX8loYCLdQSvoLX6lV4qtU-_DlAFdYeq4AaNesE5uWZGfNzAXFnbqLjQ3rwtnHT5BJMMyrC5qRr5WIHwr9DLoK197W-yEvLwj1LxuqTt-TGON4KOsX4_dSf1nCwxj5chygh5ME2kwpxFMeqTSF49uz5ANVJ4KyXXSG2SiqqOUTSd8M1LvIGOzVZNd9"
         },
         "aquaAdminPassword": {
             "value": "CSEDem0#2829!"
