@@ -8,7 +8,7 @@ echo "$@"
 usage() { echo "Usage provision_azure_resources.sh -l <resourceGroupLocation> -t <teamNumber>" 1>&2; exit 1; }
 
 declare resourceGroupLocation=""
-declare teamName="devsecopsohlite"
+declare teamName="dsoohlite"
 declare teamNumber=""
 
 while getopts ":l:t:" arg; do
@@ -146,6 +146,6 @@ if [ `az group exists --name ${aquaRgName}` ]; then
 fi
 
 az group create --name ${aquaRgName} --location ${resourceGroupLocation}
-az group deployment create --name DeployAqua --resource-group ${aquaRgName} --template-file ./template.json --parameters ./parameters.json  --parameters virtualNetworkExistingRGName=${aquaRgName} diagStorageResourceGroupName=${aquaRgName} diagStorageAccountName=${diagStorageAccountName}
+az deployment group create --name DeployAqua --resource-group ${aquaRgName} --template-file template.json --parameters @parameters.json --parameters diagStorageAccountName=${diagStorageAccountName}
 
 echo 'Done!'

@@ -2,14 +2,8 @@
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "aquaVmName": {
-            "value": "aqua-server"
-        },
-        "vmUsername": {
-            "value": "aquauser"
-        },
         "sshPublicKey": {
-            "value": "ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAg+3Cpm4g5ZJk65a9kVcUpaP6atdYEBtpsGtXj/OpvTEXCLm1ufQXd3OIJtB19hom6xoOxV8URTIBg8gtWmrYC+J7vBBUxxZ43bU0AhQ6lFjOkT78JlTe6+8UK66aoqIbju/i83AfkiRx0rMJTfXlYwkYE4a4YKSVISBY4MH/KIEEpNXFLlx96n5qmO9fDUwMDVp+LLIHvfvYCSkMS4Twl1MWa9tqP7Ght2Lj5nDJeZnR/qjA6VtKqexhe0yiwqkjLdu5iWjOBsFWzWMI18bhiC25Ao5w3SFa4NHAh97a+gtt3xOGYyIMY5aAv7CK6iN7D0U7fUbuMH6tMUbJ668M6Q== rsa-key-20190521"
+            "value": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDMLjaSj4Xik/UI6iBfY3Gl9X6GnrlAcKIb+PGyyDya37OBUmINCMg6cEohxFY08VRuvVFFyMBHAm/LOEyWY5q5HxBtfK4mF8tuZsUReRcYmEC6ARe9x7i7gZBLfjph57O4HTKSzHIVcUqvV+GPkmoPIA/+JvJYjFp/z/MZzpwzWFSzt+KMWRU6J+y8HfEdgyUIIE9a1SkyXTJ3HPSH3GNNvxxqRLe0uetGFoUGdY60eczuyXORXebuLOo06Pw3D4nNWL3vw59A+pxJ1DZYg3yVbs2H1TzjKxxBCo6qW71sjhKvdE8bOpSW5Aj+Bo55ZEeIn8N+PsXhB6T9lFVpCuaVnnwdVXmDL9BI4l1RMBSfQtRMsQFU14AlEd8+HYZt4IujqhwhkDx4TlCaLyhE4W2mrU/xnxWZNVTjYoLDpiOuK7Swu1y0UbmHcNrUuQhYflyJNIWoX5/eOiWC3RKue3kjPWay70USqDISnE+4+aPIhMxD492E4uC6tB0go3pLWo6e7JQ4gfmkS38djvYjcXa2kiUzwBE76KyhYK3sA5ymAvpy+/nQ2lTJvVjWFfneXFHEMh0Vlc8gDw/9BaCct843tYhZuA7n/btytNm/uauXUNO5n23Y6qt5fwV0oXDReQNCTanAocTe2czKFGgeL1CX9zmaLcW0MN+WSGRVs7OdGQ== aquauser"
         },
         "registryId": {
             "value": "openhackuser@microsoft.com"
@@ -18,69 +12,16 @@
             "value": "opvKpjnf"
         },
         "aquaVersion": {
-            "value": "4.5"
+            "value": "5.3"
         },
         "aquaLicenseToken": {
-            "value": "zGF97-kvD5YlzD1J2tjFTs5lXf_V4X4ReFlLUDy4SXPRWg7opp_be4t2dQzu0mccVOBkXTMb1At_4CgNGwfjvAnM_ZXVEXGCyLm6xaOB1aqoqxhn3CpsKVVhmBk3K4sfZGYZrPREe8-uUM-qcOvd8uQYFR2OfsVRBjc8ec1xyeEoQC_ycDoDXQpng0qxsqOVPnT05rQiWa83QB-nxvJ3gB_o-kkxYWElIzAEofxN3X1jauglGbakcAg_sEENRJL4gV-z5alKj_pQEGvk_9S8aXiCAOoqO20XMnJSqOVop4xn6hqLc8AeIlqnUXt2_AX9qP-eEH3Ga842uBuS6UtJoCsKshYWqmnHyuBhznVz2nW8J5PR1zOeEsMPZxRDMuuscXviT1ig4YH7EUd71OMHhH8ZYYU-ouPA3Bemsk8m09_prPSH18QJg3jAcVCNUK3AzgjVrgM-hgE_Nzv1UiwgQ5W4n1Obry5w_v34-8H8OiNZmJL_BEwoS2vYMzg7v8SwfAncMoayH7Yk_6kKPWmPW_LP3o2Q12llVZ8LBiK-d_p3AszbxnPfGgnT-Vbv6hsFV63ME9IDL7jjwCQGiywRNs1NXvGb06reZmmf0q3_VogA01x5U-b_lb7ZoCajdk0kGedA13hLSKTBv8SNzwY0L0x49Xx73jDFrej0rN0GjXEZdsUKuA=="
+            "value": "3O4-T7NgWScshhmYL4-DQw0f8zmHZy7n5tdnRgPuarrBh3nihacvkz9ivTaTAa1wtGPBjnPZ43iqWwhkF5R-5jcckojKU_3-K8syE8SMApkoxDz_RGPQ_cnb0XGKr6qEV9pqMvfcnh2X7jYqY8Yo5MpSRbt3rEn-MWW6rM__s2wgZQIuKuI7_LCnqH2mzws-Z_Jd7mGJxxKS5R2gft6k2cvi-0BOUTzpgd8RyDEjuIeqgSEX3HMS0u6KTou5I3gnf8ML_Z4hj33o4zLJmCEsqAczF2ycHWWG5wWUpHGXWpeg3soD_CoiJ8SAihV0o8DCboLqjokQPexfbiZnqJhf6dit-9nolwJhhIMxO_ROYfU5OgaZdcM-vhDv9_X3n1njRXLu6OgCmIhTsOkG4QY2OEYFCdDcgw9-o4as9GxCctG2_1NxVjBzCHcqqoM_QGVUbU-_qArdgHSkXKN14es7fiG3-IGayrOXODxpecCvw-eGhaIHvBT7otcDWsHveg9ALN0rwhppH_qITsQcitUjtn896Mb_fQmXrTwUrSG06KmIvc52MbGCfbYBW6HrnS9gC_x5d5Hsoy2yqTLJNJY6vZEImrkOUjKF23Kh-R0leqLz8fitCA1l57e10RgHBZc4QZjF5WeU0xAMH9_HAum3MMKSLI-jiPYrAzx9dhd_nxpPoPZ5"
         },
         "aquaAdminPassword": {
             "value": "CSEDem0#2829!"
         },
         "aquaDbPassword": {
             "value": "CSEDem0#2829!"
-        },
-        "vmSize": {
-            "value": "Standard_D2s_v3"
-        },
-        "vmDiskType": {
-            "value": "Premium_LRS"
-        },
-        "vmDiagnostics": {
-            "value": "true"
-        },
-        "diagStorageAccountName": {
-            "value": "bootdiag124481c2736e"
-        },
-        "diagStorageResourceGroupName": {
-            "value": "aqua_rg"
-        },
-        "diagStorageNewOrExisting": {
-            "value": "new"
-        },
-        "diagStorageType": {
-            "value": "Standard_LRS"
-        },
-        "ubuntuOSVersion": {
-            "value": "16.04.0-LTS"
-        },
-        "virtualNetworkExistingRGName": {
-            "value": "aqua_rg"
-        },
-        "vnetNewOrExisting": {
-            "value": "new"
-        },
-        "vnetAddressPrefix": {
-            "value": [
-                "10.0.3.0/24"
-            ]
-        },
-        "vnetName": {
-            "value": "aquaVnet"
-        },
-        "subnet0Name": {
-            "value": "AquaServerSubnet"
-        },
-        "subnet0AddressPrefix": {
-            "value": "10.0.3.0/24"
-        },
-        "webuiAccess": {
-            "value": "0.0.0.0/0"
-        },
-        "sshAccess": {
-            "value": "0.0.0.0/0"
-        },
-        "gatewayAccess": {
-            "value": "VirtualNetwork"
         }
     }
 }

@@ -4,7 +4,7 @@ usage() { echo 'Usage: assign_attendees.sh -u <userEmails> -t <teamNumber>' 1>&2
 
 declare organization='https://dev.azure.com/DevSecOpsOH'
 declare openHackGroupName='DryRun'
-declare teamName='devsecopsohlite'
+declare teamName='dsoohlite'
 
 # Initialize parameters specified from command line
 while getopts ":u:t:" arg; do

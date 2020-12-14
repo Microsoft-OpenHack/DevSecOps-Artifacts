@@ -4,8 +4,8 @@ usage() { echo "Usage: provision_devops.sh -t <teamNumber> -s '<personalAccessTo
 
 declare organization="https://dev.azure.com/DevSecOpsOH"
 declare repositoryName="eShopOnWeb"
-declare templateGitHubProject="https://github.com/rguthriemsft/eShopOnWeb"
-declare teamName="devsecopsohlite"
+declare templateGitHubProject="https://github.com/microsoft/DevSecOps-OpenHack-Lite_eShopOnWeb"
+declare teamName="dsoohlite"
 
 # Initialize parameters specified from command line
 while getopts ":t:s:" arg; do
@@ -22,7 +22,7 @@ while getopts ":t:s:" arg; do
 done
 shift $((OPTIND-1))
 
-declare projectName="devsecopsohlite"${teamNumber}
+declare projectName="${teamName}${teamNumber}"
 declare acrConfigFile="${teamName}${teamNumber}_acr.json"
 declare subscriptionConfigFile="${teamName}${teamNumber}_subscription.json"
 
@@ -53,13 +53,17 @@ storageConnectionString=$(echo $sp_conf | jq .storageConnectionString | xargs )
 
 # Check and add extension
 az extension add --name azure-devops
+export AZURE_DEVOPS_EXT_PAT=${personalAccessToken}
+AZURE_DEVOPS_EXT_PAT=${personalAccessToken}
 az devops configure --defaults organization=$organization
 
 # Create Project
 az devops project create --name $projectName --organization $organization -p Agile
 
 # Prepare Git repo
-git clone $templateGitHubProject
+git config --global user.email "openhackuser@microsoft.com"
+git config --global user.name "OpenHack"
+git clone $templateGitHubProject $repositoryName
 cd $repositoryName
 git config core.autocrlf false
 git config core.eol lf
@@ -90,7 +94,7 @@ rm -rf $repositoryName
 
 # Create Two Pipelines with configuring variables and service connection
 az pipelines create --name 'eShopOnWeb.CI' --description 'Pipeline for building eShopWeb on Windows' --repository $repositoryName --branch master --repository-type tfsgit --yaml-path eShopOnWeb-CI.yml -p $projectName --skip-run --organization $organization
-az pipelines create --name 'eShopOnWeb-Docker.CI' --description 'Pipeline for building eShopWeb on Windows' --repository $repositoryName --branch master --repository-type tfsgit --yaml-path eShopOnWeb-Docker-CI.yml -p $projectName --skip-run --organization $organization
+az pipelines create --name 'eShopOnWeb-Docker.CI' --description 'Pipeline for building eShopWeb on Linux' --repository $repositoryName --branch master --repository-type tfsgit --yaml-path eShopOnWeb-Docker-CI.yml -p $projectName --skip-run --organization $organization
 
 # Configure the variables of ACR
 az pipelines variable create --name registryUrl --value $acrLoginServer --pipeline-name eShopOnWeb-Docker.CI -p $projectName --organization $organization
@@ -118,4 +122,7 @@ echo $configeFileData | jq --arg ProjName ${projectName} --arg projId ${projectI
 # Run Docker CI
 az pipelines run --name 'eShopOnWeb-Docker.CI' --branch master --project $projectName --organization $organization
 
+# Clear PAT
+export AZURE_DEVOPS_EXT_PAT=0
+AZURE_DEVOPS_EXT_PAT=0
 echo 'Done!'

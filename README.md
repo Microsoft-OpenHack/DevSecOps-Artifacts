@@ -14,6 +14,13 @@ This script deploys and configures all the resources your team will need in orde
 
 ## How to deploy lab env
 
+### Preprequisites
+
+* Linux/WSL - provisioning scrips are using Bash
+* jq - the jq command line processor (`sudo apt-get install jq`)
+* git - the DevOps provisioning script is pushing to the repo, make sure you have configured your email and name: `git config --global user.email "..."` and `git config --global user.name "..."`
+* Azure CLI - with JSON as the default output format (`az configure`)
+
 ### High Level Overview
 
 1. Az Login to Opsgility subscription
@@ -35,7 +42,7 @@ This script deploys and configures all the resources your team will need in orde
 Using the one of the credentials provided by Opsgility, execute an AZ Login (For testing you can either your internal subscription or MSDN subscription)
 
 ```bash
-#For OpsGility use
+#For Opsgility use
 az login -u <username> -p '<password>'
 
 #For Internal or MSDN use (Will take you to browser to complete sign-in)
@@ -44,10 +51,10 @@ az login
 
 ### 2. Provision the Azure Resources in Opsgility subscription
 
-This assumes you are in the root of repo.
+This assumes you are in the root of repo. On Windows ensure that all scripts use the LF line endings after cloning (easy to change in VS Code).
 
 ```bash
-./provision_azure_resources.sh -l westus -t <teamNumber>
+./provision_azure_resources.sh -l centralus -t <teamNumber>
 ```
 
 Once this script completes, two files will be present in the scripts directory. They are acr.json and subscription.json. These files contain information needed during the provisioning of DevOps resources in step 4. Do not delete them. Keeping a copy of these files after the provisioning has completed will save time during some of the challenges by making information quickly available to the team.
@@ -85,13 +92,13 @@ Personal Access Token is required to configure Git repo for OpenHack challenges.
 Provision the DevOps project by running the script below. You will pass the same team number, and PAT created in previous section.
 
 ```bash
-bash provision_devops.sh -t <teamNumber> -s '<personalAccessToken>'
+./provision_devops.sh -t <teamNumber> -s '<personalAccessToken>'
 ```
 
 Example: Provision the project for team 1.
 
 ```bash
-bash provision_devops.sh -t 1 -s 'lqqmlixfx5sgfsfguu7bhsv5uggsdhjfkuhkhlljlkh2yyfgklsa'
+./provision_devops.sh -t 1 -s 'lqqmlixfx5sgfsfguu7bhsv5uggsdhjfkuhkhlljlkh2yyfgklsa'
 ```
 
 ### 6. Assign Attendees to Projects
@@ -102,10 +109,10 @@ Finally, collect aliases of all Attendees. You will pass the same team number, a
 ./assign_attendees.sh -u <Comma separated usernames> -t <teamNumber>
 ```
 
-Example: Assign access to ADO project for Volker Will and Richard Guthrie who are in team 1.
+Example: Assign access to ADO project for Dariusz Porowski and Richard Guthrie who are in team 1.
 
 ```bash
-./assign_attendees.sh -u -u teamMember1@microsoft.com,teamMember2@microsoft.com -t 1
+./assign_attendees.sh -u daporo@microsoft.com,rguthrie@microsoft.com -t 1
 ```
 
 ### 7. Save your work
