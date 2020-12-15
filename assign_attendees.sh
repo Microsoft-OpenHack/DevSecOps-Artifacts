@@ -1,13 +1,13 @@
 #!/bin/bash
 
-usage() { echo 'Usage: assign_attendees.sh -u <userEmails> -t <teamNumber>' 1>&2; exit 1; }
+usage() { echo "Usage: assign_attendees.sh -u <userEmails> -t <teamNumber> -s '<personalAccessToken>'" 1>&2; exit 1; }
 
 declare organization='https://dev.azure.com/DevSecOpsOH'
 declare openHackGroupName='DryRun'
 declare teamName='dsoohlite'
 
 # Initialize parameters specified from command line
-while getopts ":u:t:" arg; do
+while getopts ":u:t:s:" arg; do
     case "${arg}" in
 
         u)
@@ -16,12 +16,15 @@ while getopts ":u:t:" arg; do
         t)
             teamNumber=$(echo "${OPTARG}" | tr '[:upper:]' '[:lower:]' | tr -d '[:space:]')
         ;;
+        s)
+            personalAccessToken=${OPTARG}
+        ;;
 
     esac
 done
 shift $((OPTIND-1))
 
-declare projectName=${teamName}${teamNumber}
+declare projectName="${teamName}${teamNumber}"
 
 echo '=========================================='
 echo ' VARIABLES'
@@ -33,6 +36,11 @@ echo 'userEmails                = '${userEmails}
 echo 'teamNumber                = '${teamNumber}
 echo '=========================================='
 
+# Check and add extension
+az extension add --name azure-devops
+export AZURE_DEVOPS_EXT_PAT=${personalAccessToken}
+AZURE_DEVOPS_EXT_PAT=${personalAccessToken}
+az devops configure --defaults organization=$organization
 
 # Add users to groups and projects
 CurrentIFS=$IFS
@@ -55,5 +63,9 @@ do
 done
 
 IFS=$CurrentIFS
+
+# Clear PAT
+export AZURE_DEVOPS_EXT_PAT=0
+AZURE_DEVOPS_EXT_PAT=0
 
 echo 'Done!'
