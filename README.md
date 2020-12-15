@@ -18,7 +18,6 @@ This script deploys and configures all the resources your team will need in orde
 
 * Linux/WSL - provisioning scrips are using Bash
 * jq - the jq command line processor (`sudo apt-get install jq`)
-* git - the DevOps provisioning script is pushing to the repo, make sure you have configured your email and name: `git config --global user.email "..."` and `git config --global user.name "..."`
 * Azure CLI - with JSON as the default output format (`az configure`)
 
 ### High Level Overview
@@ -59,35 +58,21 @@ This assumes you are in the root of repo. On Windows ensure that all scripts use
 
 Once this script completes, two files will be present in the scripts directory. They are acr.json and subscription.json. These files contain information needed during the provisioning of DevOps resources in step 4. Do not delete them. Keeping a copy of these files after the provisioning has completed will save time during some of the challenges by making information quickly available to the team.
 
-### 3. Az login to your MSFT Account
+### 3. Prepare Personal Access Token (PAT) for Azure DevOps
 
-Once you have provisioned the infrastructure, you will need to do a second az login to login with your Microsoft Account.
-
-``` Bash
-az login #should open a browser where you can sign-in with your MSFT account.
-
-#If you have multiple subscriptions, you need to set the correct subscription.
-az account list
-az account set -s <subscription id>
-
-az account show
-```
-
-### 4. Prepare Personal Access Token (PAT) for Azure DevOps
-
-Personal Access Token is required to configure Git repo for OpenHack challenges. To get PAT, please follow below steps:
+Personal Access Token is required to configure Project, Git repo, Pipelines, assign access, etc. To get PAT, please follow below steps:
 
 1. Go to [https://dev.azure.com/DevSecOpsOH/_usersSettings/tokens](https://dev.azure.com/DevSecOpsOH/_usersSettings/tokens), and click **New Token**.
 
-1. Fill out Name for your token (e.g. DevSecOps - code full), and select **Full** under **Code** section.
+1. Fill out Name for your token (e.g. DevSecOps OpenHack), and select **Full acces** under **Scopes** section.
 
     ![PAT create](images/PatCreate.png)
 
-1. Save your Token for later use in the next section (5. Deploy Azure DevOps project).
+1. Save your Token for later use in the next sectios (4. Deploy Azure DevOps project & 5. Assign Attendees to Project).
 
     ![PAT OK](images/PatCreateOk.png)
 
-### 5. Deploy Azure DevOps project
+### 4. Deploy Azure DevOps project
 
 Provision the DevOps project by running the script below. You will pass the same team number, and PAT created in previous section.
 
@@ -101,20 +86,20 @@ Example: Provision the project for team 1.
 ./provision_devops.sh -t 1 -s 'lqqmlixfx5sgfsfguu7bhsv5uggsdhjfkuhkhlljlkh2yyfgklsa'
 ```
 
-### 6. Assign Attendees to Projects
+### 5. Assign Attendees to Project
 
 Finally, collect aliases of all Attendees. You will pass the same team number, and a **comma-separated list** of emails for users that should be assigned into the project.
 
 ```bash
-./assign_attendees.sh -u <Comma separated usernames> -t <teamNumber>
+./assign_attendees.sh -u <Comma separated usernames> -t <teamNumber> -s '<personalAccessToken>'
 ```
 
 Example: Assign access to ADO project for Dariusz Porowski and Richard Guthrie who are in team 1.
 
 ```bash
-./assign_attendees.sh -u daporo@microsoft.com,rguthrie@microsoft.com -t 1
+./assign_attendees.sh -u daporo@microsoft.com,rguthrie@microsoft.com -t 1 -s 'lqqmlixfx5sgfsfguu7bhsv5uggsdhjfkuhkhlljlkh2yyfgklsa'
 ```
 
-### 7. Save your work
+### 6. Save your work
 
 Keep the `<teamName>_subscription.json` and `<teamName>_acr.json` files you will need them in Challenge 1.
