@@ -53,13 +53,13 @@ az login
 This assumes you are in the root of repo. On Windows ensure that all scripts use the LF line endings after cloning (easy to change in VS Code).
 
 ```bash
-./provision_azure_resources.sh -l centralus -n <teamName> -t <teamNumber>
+./provision_azure_resources.sh -l <location> -n <teamName> -t <teamNumber>
 ```
 
 Example: Provision the infrastructure for dsooh1 team.
 
 ```bash
-./provision_azure_resources.sh -n dsooh -t 1
+./provision_azure_resources.sh -l centralus -n dsooh -t 1
 ```
 
 Once this script completes, two files will be present in the scripts directory. They are acr.json and subscription.json. These files contain information needed during the provisioning of DevOps resources in step 4. Do not delete them. Keeping a copy of these files after the provisioning has completed will save time during some of the challenges by making information quickly available to the team.
