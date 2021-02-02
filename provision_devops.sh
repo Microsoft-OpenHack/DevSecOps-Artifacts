@@ -1,22 +1,24 @@
 #!/bin/bash
 
-usage() { echo "Usage: provision_devops.sh -n <teamName> -t <teamNumber> -s '<personalAccessToken>'" 1>&2; exit 1; }
+usage() { echo "Usage: provision_devops.sh -n <teamName> -t <teamNumber> -o <adoOrgName> -s '<personalAccessToken>'" 1>&2; exit 1; }
 
-declare organization="https://dev.azure.com/DevSecOpsOH"
+declare adoOrgName="DevSecOpsOH"
 declare repositoryName="eShopOnWeb"
 declare templateGitHubProject="https://github.com/microsoft/DevSecOps-OpenHack-Lite_eShopOnWeb"
 declare teamName="dsooh"
-declare feedUrl="https://pkgs.dev.azure.com/DevSecOpsOH/_packaging/eShopOnWebFeed/nuget/v3/index.json"
 
 # Initialize parameters specified from command line
-while getopts ":n:t:s:" arg; do
+while getopts ":n:t:o:s:" arg; do
     case "${arg}" in
 
         n)
-            teamName=${OPTARG}
+            teamName=$(echo "${OPTARG}" | tr '[:upper:]' '[:lower:]' | tr -d '[:space:]')
         ;;
         t)
             teamNumber=$(echo "${OPTARG}" | tr '[:upper:]' '[:lower:]' | tr -d '[:space:]')
+        ;;
+        o)
+            adoOrgName=${OPTARG}
         ;;
         s)
             personalAccessToken=${OPTARG}
@@ -26,6 +28,8 @@ while getopts ":n:t:s:" arg; do
 done
 shift $((OPTIND-1))
 
+declare organization="https://dev.azure.com/${adoOrgName}"
+declare feedUrl="https://pkgs.dev.azure.com/${adoOrgName}/_packaging/${repositoryName}/nuget/v3/index.json"
 declare projectName="${teamName}${teamNumber}"
 declare acrConfigFile="${teamName}${teamNumber}_acr.json"
 declare subscriptionConfigFile="${teamName}${teamNumber}_subscription.json"
@@ -33,6 +37,7 @@ declare subscriptionConfigFile="${teamName}${teamNumber}_subscription.json"
 echo "=========================================="
 echo " VARIABLES"
 echo "=========================================="
+echo "adoOrgName                = "${adoOrgName}
 echo "organization              = "${organization}
 echo "projectName               = "${projectName}
 echo "repositoryName            = "${repositoryName}
@@ -78,19 +83,23 @@ escapedStorageConnectionString=$(echo "$storageConnectionString" | sed 's/\//\\\
 if [[ "$OSTYPE" == "darwin"* ]]; then
     echo "Provisioning from MAC OSX"
     sed -i '' "s/REPLACEWITHCS/${escapedStorageConnectionString}/g" src/Infrastructure/Data/StorageAcctDbSeed.cs
+    sed -i '' "s/__ADOORG__/${adoOrgName}/g" nuget.config
 else
     echo "provisioning on Windows/Linux"
     sed -i "s/REPLACEWITHCS/${escapedStorageConnectionString}/g" src/Infrastructure/Data/StorageAcctDbSeed.cs
+    sed -i "s/__ADOORG__/${adoOrgName}/g" nuget.config
 fi
 
-git commit -a -m "Updated connection string."
+git commit -a -m "Updated connection string & ADO org."
 git checkout ch1_Fix
 git merge master
 perl -i -0pe 's/(<<<<<<< HEAD\n)//gm' src/Infrastructure/Data/StorageAcctDbSeed.cs
 perl -i -0pe 's/(=======)([\S\s]*?)(>>>>>>> master\n)//mg' src/Infrastructure/Data/StorageAcctDbSeed.cs
+perl -i -0pe 's/(<<<<<<< HEAD\n)//gm' nuget.config
+perl -i -0pe 's/(=======)([\S\s]*?)(>>>>>>> master\n)//mg' nuget.config
 git commit -a -m "Resolved merge conflict."
 git checkout master
-repoUrl=$(az repos create -p $projectName --name $repositoryName --organization $organization --query 'remoteUrl' -o tsv)
+repoUrl=$(az repos create -p ${projectName} --name ${repositoryName} --organization ${organization} --query 'remoteUrl' -o tsv)
 repoUrl=$(sed "s/@/:${personalAccessToken}@/g" <<<$repoUrl)
 git push --mirror $repoUrl
 cd ..

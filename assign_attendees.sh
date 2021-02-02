@@ -1,23 +1,26 @@
 #!/bin/bash
 
-usage() { echo "Usage: assign_attendees.sh -u <userEmails> -n <teamName> -t <teamNumber> -s '<personalAccessToken>'" 1>&2; exit 1; }
+usage() { echo "Usage: assign_attendees.sh -u <userEmails> -n <teamName> -t <teamNumber> -o <adoOrgName> -s '<personalAccessToken>'" 1>&2; exit 1; }
 
-declare organization='https://dev.azure.com/DevSecOpsOH'
+
 declare openHackGroupName='OpenHack'
 declare teamName='dsooh'
 
 # Initialize parameters specified from command line
-while getopts ":u:n:t:s:" arg; do
+while getopts ":u:n:t:o:s:" arg; do
     case "${arg}" in
 
         u)
             userEmails=${OPTARG}
         ;;
         n)
-            teamName=${OPTARG}
+            teamName=$(echo "${OPTARG}" | tr '[:upper:]' '[:lower:]' | tr -d '[:space:]')
         ;;
         t)
             teamNumber=$(echo "${OPTARG}" | tr '[:upper:]' '[:lower:]' | tr -d '[:space:]')
+        ;;
+        o)
+            adoOrgName=${OPTARG}
         ;;
         s)
             personalAccessToken=${OPTARG}
@@ -27,11 +30,13 @@ while getopts ":u:n:t:s:" arg; do
 done
 shift $((OPTIND-1))
 
+declare organization="https://dev.azure.com/${adoOrgName}"
 declare projectName="${teamName}${teamNumber}"
 
 echo '=========================================='
 echo ' VARIABLES'
 echo '=========================================='
+echo "adoOrgName                = "${adoOrgName}
 echo 'organization              = '${organization}
 echo 'openHackGroupName         = '${openHackGroupName}
 echo 'projectName               = '${projectName}

@@ -17,7 +17,7 @@ while getopts ":l:n:t:" arg; do
             resourceGroupLocation=${OPTARG}
         ;;
         n)
-            teamName=${OPTARG}
+            teamName=$(echo "${OPTARG}" | tr '[:upper:]' '[:lower:]' | tr -d '[:space:]')
         ;;
         t)
             teamNumber=$(echo "${OPTARG}" | tr '[:upper:]' '[:lower:]' | tr -d '[:space:]')
