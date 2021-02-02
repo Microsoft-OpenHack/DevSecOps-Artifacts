@@ -64,6 +64,12 @@ Example: Provision the infrastructure for dsooh1 team.
 
 Once this script completes, two files will be present in the scripts directory. They are acr.json and subscription.json. These files contain information needed during the provisioning of DevOps resources in step 4. Do not delete them. Keeping a copy of these files after the provisioning has completed will save time during some of the challenges by making information quickly available to the team.
 
+> NOTE! If the resources are not delivered correctly, remove the resource group from your subscription first, and then try again.
+> Before you run once again, you have to purge Key Vault by running this command: az keyvault purge --subscription <subscriptionId> -n <teamName><teamNumber>kv
+> 
+> If you have only issues with Aqua VM provisioning, then run only provision_aquavm.sh script.
+> ./provision_aquavm.sh -l <location> -n <teamName> -t <teamNumber>
+
 ### 3. Prepare Personal Access Token (PAT) for Azure DevOps
 
 Personal Access Token is required to configure Project, Git repo, Pipelines, assign access, etc. To get PAT, please follow below steps:
