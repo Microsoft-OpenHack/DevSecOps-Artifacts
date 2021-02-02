@@ -36,7 +36,7 @@ This script deploys and configures all the resources your team will need in orde
 
 7. Save your work
 
-### 1. Az Login to Opsgility Subscription
+### 1. Az Login to Opsgility/Internal Subscription
 
 Using the one of the credentials provided by Opsgility, execute an AZ Login (For testing you can either your internal subscription or MSDN subscription)
 
@@ -48,7 +48,7 @@ az login -u <username> -p '<password>'
 az login
 ```
 
-### 2. Provision the Azure Resources in Opsgility subscription
+### 2. Provision the Azure Resources in Opsgility/Internal subscription
 
 This assumes you are in the root of repo. On Windows ensure that all scripts use the LF line endings after cloning (easy to change in VS Code).
 
