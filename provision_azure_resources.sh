@@ -5,16 +5,19 @@ IFS=$'\n\t'
 
 echo "$@"
 
-usage() { echo "Usage provision_azure_resources.sh -l <resourceGroupLocation> -t <teamNumber>" 1>&2; exit 1; }
+usage() { echo "Usage provision_azure_resources.sh -l <resourceGroupLocation> -n <teamName> -t <teamNumber>" 1>&2; exit 1; }
 
 declare resourceGroupLocation=""
-declare teamName="dsoohlite"
+declare teamName="dsooh"
 declare teamNumber=""
 
-while getopts ":l:t:" arg; do
+while getopts ":l:n:t:" arg; do
     case "${arg}" in
         l)
             resourceGroupLocation=${OPTARG}
+        ;;
+        n)
+            teamName=${OPTARG}
         ;;
         t)
             teamNumber=$(echo "${OPTARG}" | tr '[:upper:]' '[:lower:]' | tr -d '[:space:]')

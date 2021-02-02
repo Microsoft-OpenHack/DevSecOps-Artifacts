@@ -1,17 +1,20 @@
 #!/bin/bash
 
-usage() { echo "Usage: assign_attendees.sh -u <userEmails> -t <teamNumber> -s '<personalAccessToken>'" 1>&2; exit 1; }
+usage() { echo "Usage: assign_attendees.sh -u <userEmails> -n <teamName> -t <teamNumber> -s '<personalAccessToken>'" 1>&2; exit 1; }
 
 declare organization='https://dev.azure.com/DevSecOpsOH'
 declare openHackGroupName='DryRun'
-declare teamName='dsoohlite'
+declare teamName='dsooh'
 
 # Initialize parameters specified from command line
-while getopts ":u:t:s:" arg; do
+while getopts ":u:n:t:s:" arg; do
     case "${arg}" in
 
         u)
             userEmails=${OPTARG}
+        ;;
+        n)
+            teamName=${OPTARG}
         ;;
         t)
             teamNumber=$(echo "${OPTARG}" | tr '[:upper:]' '[:lower:]' | tr -d '[:space:]')

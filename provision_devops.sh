@@ -1,17 +1,20 @@
 #!/bin/bash
 
-usage() { echo "Usage: provision_devops.sh -t <teamNumber> -s '<personalAccessToken>'" 1>&2; exit 1; }
+usage() { echo "Usage: provision_devops.sh -n <teamName> -t <teamNumber> -s '<personalAccessToken>'" 1>&2; exit 1; }
 
 declare organization="https://dev.azure.com/DevSecOpsOH"
 declare repositoryName="eShopOnWeb"
 declare templateGitHubProject="https://github.com/microsoft/DevSecOps-OpenHack-Lite_eShopOnWeb"
-declare teamName="dsoohlite"
+declare teamName="dsooh"
 declare feedUrl="https://pkgs.dev.azure.com/DevSecOpsOH/_packaging/eShopOnWebFeed/nuget/v3/index.json"
 
 # Initialize parameters specified from command line
-while getopts ":t:s:" arg; do
+while getopts ":n:t:s:" arg; do
     case "${arg}" in
 
+        n)
+            teamName=${OPTARG}
+        ;;
         t)
             teamNumber=$(echo "${OPTARG}" | tr '[:upper:]' '[:lower:]' | tr -d '[:space:]')
         ;;
