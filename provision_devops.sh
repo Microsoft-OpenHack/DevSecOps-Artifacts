@@ -6,6 +6,7 @@ declare organization="https://dev.azure.com/DevSecOpsOH"
 declare repositoryName="eShopOnWeb"
 declare templateGitHubProject="https://github.com/microsoft/DevSecOps-OpenHack-Lite_eShopOnWeb"
 declare teamName="dsoohlite"
+declare feedUrl="https://pkgs.dev.azure.com/DevSecOpsOH/_packaging/eShopOnWebFeed/nuget/v3/index.json"
 
 # Initialize parameters specified from command line
 while getopts ":t:s:" arg; do
@@ -97,9 +98,10 @@ az pipelines create --name 'eShopOnWeb.CI' --description 'Pipeline for building 
 az pipelines create --name 'eShopOnWeb-Docker.CI' --description 'Pipeline for building eShopWeb on Linux' --repository $repositoryName --branch master --repository-type tfsgit --yaml-path eShopOnWeb-Docker-CI.yml -p $projectName --skip-run --organization $organization
 
 # Configure the variables of ACR
-az pipelines variable create --name registryUrl --value $acrLoginServer --pipeline-name eShopOnWeb-Docker.CI -p $projectName --organization $organization
-az pipelines variable create --name registryPassword --value $acrPassword --pipeline-name eShopOnWeb-Docker.CI -p $projectName --organization $organization
-az pipelines variable create --name registryName --value $acrUsername --pipeline-name eShopOnWeb-Docker.CI -p $projectName --organization $organization
+az pipelines variable create --name registryUrl --value $acrLoginServer --pipeline-name 'eShopOnWeb-Docker.CI' -p $projectName --organization $organization
+az pipelines variable create --name registryPassword --value $acrPassword --pipeline-name 'eShopOnWeb-Docker.CI' -p $projectName --organization $organization
+az pipelines variable create --name registryName --value $acrUsername --pipeline-name 'eShopOnWeb-Docker.CI' -p $projectName --organization $organization
+az pipelines variable create --name feedUrl --value $feedUrl --pipeline-name 'eShopOnWeb-Docker.CI' -p $projectName --organization $organization
 
 # Configure the servcie endpoint
 export AZURE_DEVOPS_EXT_AZURE_RM_SERVICE_PRINCIPAL_KEY=$serviceEndpointSpPassword
