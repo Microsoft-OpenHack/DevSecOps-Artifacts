@@ -3,7 +3,7 @@
 usage() { echo "Usage: assign_attendees.sh -u <userEmails> -n <teamName> -t <teamNumber> -s '<personalAccessToken>'" 1>&2; exit 1; }
 
 declare organization='https://dev.azure.com/DevSecOpsOH'
-declare openHackGroupName='DryRun'
+declare openHackGroupName='OpenHack'
 declare teamName='dsooh'
 
 # Initialize parameters specified from command line
