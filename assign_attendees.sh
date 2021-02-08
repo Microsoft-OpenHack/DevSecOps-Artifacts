@@ -2,7 +2,7 @@
 
 usage() { echo "Usage: assign_attendees.sh -u <userEmails> -n <teamName> -t <teamNumber> -o <adoOrgName> -s '<personalAccessToken>'" 1>&2; exit 1; }
 
-
+declare adoOrgName="DevSecOpsOH"
 declare openHackGroupName='OpenHack'
 declare teamName='dsooh'
 

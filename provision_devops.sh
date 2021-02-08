@@ -95,8 +95,6 @@ git checkout ch1_Fix
 git merge master
 perl -i -0pe 's/(<<<<<<< HEAD\n)//gm' src/Infrastructure/Data/StorageAcctDbSeed.cs
 perl -i -0pe 's/(=======)([\S\s]*?)(>>>>>>> master\n)//mg' src/Infrastructure/Data/StorageAcctDbSeed.cs
-perl -i -0pe 's/(<<<<<<< HEAD\n)//gm' nuget.config
-perl -i -0pe 's/(=======)([\S\s]*?)(>>>>>>> master\n)//mg' nuget.config
 git commit -a -m "Resolved merge conflict."
 git checkout master
 repoUrl=$(az repos create -p ${projectName} --name ${repositoryName} --organization ${organization} --query 'remoteUrl' -o tsv)
