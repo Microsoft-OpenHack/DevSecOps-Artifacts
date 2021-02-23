@@ -60,11 +60,11 @@ for email in ${emails[@]}
 do
     echo 'email: '${email}
     memberDescriptor=`az devops user add --email-id $email --license-type stakeholder --organization $organization --send-email-invite false --query 'user.descriptor' --output tsv`
-    openHackGroupDescriptor=`az devops security group list --organization $organization --scope organization --query "graphGroups[?displayName=='${openHackGroupName}'].descriptor" --output tsv`
+    #openHackGroupDescriptor=`az devops security group list --organization $organization --scope organization --query "graphGroups[?displayName=='${openHackGroupName}'].descriptor" --output tsv`
     projectAdministratorDescriptor=`az devops security group list --organization $organization -p $projectName --scope=project --query "graphGroups[?displayName=='Project Administrators'].descriptor" --output tsv`
     buildAdministratorDescriptor=`az devops security group list --organization $organization -p $projectName --scope=project --query "graphGroups[?displayName=='Build Administrators'].descriptor" --output tsv`
     teamDescriptor=`az devops security group list --organization $organization -p $projectName --scope=project --query "graphGroups[?displayName=='${projectName} Team'].descriptor" --output tsv`
-    az devops security group membership add --group-id $openHackGroupDescriptor --member-id $memberDescriptor --organization $organization
+    #az devops security group membership add --group-id $openHackGroupDescriptor --member-id $memberDescriptor --organization $organization
     az devops security group membership add --group-id $projectAdministratorDescriptor --member-id $memberDescriptor --organization $organization
     az devops security group membership add --group-id $buildAdministratorDescriptor --member-id $memberDescriptor --organization $organization
     az devops security group membership add --group-id $teamDescriptor --member-id $memberDescriptor --organization $organization
