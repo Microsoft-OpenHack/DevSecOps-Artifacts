@@ -9,7 +9,7 @@ This script deploys and configures all the resources your team will need in orde
   * App Service Plan
   * Virtual Machine running Aqua
 
-* **Deployed to Microsoft Azure DevOps Organization (<https://dev.azure.com/DevSecOpsOH>)**
+* **Deployed to Microsoft Azure DevOps Organization**
   * Azure DevOps Project
 
 ## How to deploy lab env
