@@ -101,7 +101,7 @@ Personal Access Token is required to configure Project, Git repo, Pipelines, ass
 
     ![PAT OK](images/PatCreateOk.png)
 
-### 4. Deploy Azure DevOps project
+### 5. Deploy Azure DevOps project
 
 Provision the DevOps project by running the script below. You will pass the same team number, and PAT created in previous section.
 
@@ -115,7 +115,7 @@ Example: Provision the project for dsooh1 team.
 ./provision_devops.sh -n dsooh -t 1 -o DevSecOpsOH -s 'lqqmlixfx5sgfsfguu7bhsv5uggsdhjfkuhkhlljlkh2yyfgklsa'
 ```
 
-### 5. Assign Attendees to Project
+### 6. Assign Attendees to Project
 
 Finally, collect aliases of all Attendees. You will pass the same team number, and a **comma-separated list** of emails for users that should be assigned into the project.
 
@@ -130,6 +130,30 @@ Example: Assign access to ADO project for Dariusz Porowski and Richard Guthrie w
 
 ```
 
-### 6. Save your work
+### 7. Save your work
 
 Keep the `<teamName>_subscription.json` and `<teamName>_acr.json` files you will need them in Challenge 1.
+
+### 8. Prepare WhiteSource
+
+1. Create a new WhiteSource organization dedicated only for your Team.
+
+   1. Go to [Admin](https://saas.whitesourcesoftware.com/Wss/WSS.html#!adminOrganization) section, select [General Configuration](https://saas.whitesourcesoftware.com/Wss/WSS.html#!adminOrganization_generalConfig), and click [Create New Organization](https://saas.whitesourcesoftware.com/Wss/WSS.html#!addNewOrganization).
+
+   2. Use this naming pattern for teh new WS org: <adoOrgName>-<teamName><teamNumber> example: DevSecOpsOH-dsooh1
+
+      ![New WS org](images/NewWsOrg.png)
+
+2. Invite team members to your WS org.
+
+   1. Go to [Admin](https://saas.whitesourcesoftware.com/Wss/WSS.html#!adminOrganization) section, select [Users](https://saas.whitesourcesoftware.com/Wss/WSS.html#!adminOrganization_users) and click **Invite Users**. Make sure **Send email to newly created/invited users** is checked.
+
+      ![New WS org](images/NewWsOrg.png)
+
+3. Assign permissions to WS org members.
+   
+   1. Go to [Admin](https://saas.whitesourcesoftware.com/Wss/WSS.html#!adminOrganization) section, select [Groups](https://saas.whitesourcesoftware.com/Wss/WSS.html#!adminOrganization_groups) and click **Add Users** (Make sure **admins** group is selected).
+   
+   2. Select all invited users, and click **OK**. 
+
+      ![New WS org](images/WsAddToGroup.png)
