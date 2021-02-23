@@ -29,7 +29,7 @@ done
 shift $((OPTIND-1))
 
 declare organization="https://dev.azure.com/${adoOrgName}"
-declare feedUrl="https://pkgs.dev.azure.com/${adoOrgName}/_packaging/${repositoryName}/nuget/v3/index.json"
+declare feedUrl="https://pkgs.dev.azure.com/${adoOrgName}/_packaging/${adoOrgName}/nuget/v3/index.json"
 declare projectName="${teamName}${teamNumber}"
 declare acrConfigFile="${teamName}${teamNumber}_acr.json"
 declare subscriptionConfigFile="${teamName}${teamNumber}_subscription.json"
