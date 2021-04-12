@@ -1,4 +1,4 @@
-# DevSecOps OpenHack Light deployment script
+# DevSecOps OpenHack deployment script
 
 This script deploys and configures all the resources your team will need in order to complete the challenges during the OpenHack. These resources:
 
