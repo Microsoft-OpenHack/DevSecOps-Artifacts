@@ -1,4 +1,4 @@
-# DevSecOps OpenHack deployment script
+# Retired as of June 30, 2021: DevSecOps OpenHack deployment script
 
 This script deploys and configures all the resources your team will need in order to complete the challenges during the OpenHack. These resources:
 
